@@ -74,18 +74,18 @@ const AdminLayout = ({ children }) => {
       <aside className={`admin-sidebar ${isSidebarOpen ? 'open' : ''}`}>
         <button className="close-sidebar" onClick={toggleSidebar}>×</button>
         <nav className="admin-nav">
-          <a href="/admin/dashboard" className="admin-nav-link">
+          <NavLink  href="/admin/dashboard" className="admin-nav-link">
             📊 الرئيسية
-          </a>
-          <a href="/admin/products" className="admin-nav-link">
+          </NavLink >
+          <NavLink  href="/admin/products" className="admin-nav-link">
             📦 المنتجات
-          </a>
-          <a href="/admin/orders" className="admin-nav-link">
+          </NavLink >
+          <NavLink  href="/admin/orders" className="admin-nav-link">
             🛒 الطلبات
-          </a>
-          <a href="/admin/stats" className="admin-nav-link">
+          </NavLink >
+          <NavLink  href="/admin/stats" className="admin-nav-link">
             📈 الإحصائيات
-          </a>
+          </NavLink >
         </nav>
         <div className="admin-sidebar-footer">
           <button onClick={logout} className="admin-logout-button">
