@@ -9,6 +9,7 @@ const ProductDetails = ({ product }) => {
   const [selectedColor, setSelectedColor] = useState('');
   const [quantity, setQuantity] = useState(1);
   const [showSuccess, setShowSuccess] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
 
   const { addToCart } = useCart();
 
@@ -42,18 +43,23 @@ const ProductDetails = ({ product }) => {
   }, [mobileStripRef, selectedImage]);
 
   const handleAddToCart = () => {
+    const showError = (msg) => {
+      setErrorMessage(msg);
+      setTimeout(() => setErrorMessage(''), 3000);
+    };
+
     if (!selectedSize) {
-      alert('الرجاء اختيار المقاس');
+      showError('الرجاء اختيار المقاس');
       return;
     }
     if (!selectedColor) {
-      alert('الرجاء اختيار اللون');
+      showError('الرجاء اختيار اللون');
       return;
     }
 
     const maxQuantity = product.sizes[selectedSize] || 0;
     if (quantity > maxQuantity) {
-      alert(`الكمية المتوفرة: ${maxQuantity}`);
+      showError(`الكمية المتوفرة: ${maxQuantity}`);
       return;
     }
 
@@ -84,6 +90,13 @@ const ProductDetails = ({ product }) => {
         </div>
       )}
 
+      {/* Error Message (styled) */}
+      {errorMessage && (
+        <div className="alert alert-error" style={styles.errorMessage}>
+          {errorMessage}
+        </div>
+      )}
+
       <div style={styles.content} className="product-content">
         {/* Images Section */}
         <div style={styles.imagesSection} className="images-section">
@@ -100,6 +113,13 @@ const ProductDetails = ({ product }) => {
                   />
                   <div className="mobile-figure-details">
                     <h2 className="mobile-figure-title">{product.name}</h2>
+                    {/* Price above category for mobile figure */}
+                    <div className="mobile-figure-price" style={{ marginBottom: '0.5rem' }}>
+                      <span style={styles.price}>{formatPrice(displayPrice)}</span>
+                      {hasDiscount && (
+                        <span style={styles.oldPrice}>{formatPrice(product.sellPrice)}</span>
+                      )}
+                    </div>
                     <div className="mobile-figure-category">
                       <span className="badge badge-primary">{product.category}</span>
                     </div>
@@ -215,18 +235,18 @@ const ProductDetails = ({ product }) => {
   {/* Details Section */}
   <div style={styles.detailsSection} className="details-section">
           <h1 style={styles.title}>{product.name}</h1>
-          
-          {/* Category */}
-          <div style={{ marginBottom: '1rem' }}>
-            <span className="badge badge-primary">{product.category}</span>
-          </div>
 
-          {/* Price */}
+          {/* Price (moved above category per request) */}
           <div style={styles.priceContainer}>
             <span style={styles.price}>{formatPrice(displayPrice)}</span>
             {hasDiscount && (
               <span style={styles.oldPrice}>{formatPrice(product.sellPrice)}</span>
             )}
+          </div>
+
+          {/* Category */}
+          <div style={{ marginBottom: '1rem' }}>
+            <span className="badge badge-primary">{product.category}</span>
           </div>
 
           {/* Description */}
@@ -322,6 +342,14 @@ const styles = {
     zIndex: 1000,
     minWidth: '300px'
   },
+  errorMessage: {
+    position: 'fixed',
+    top: '140px',
+    left: '50%',
+    transform: 'translateX(-50%)',
+    zIndex: 1000,
+    minWidth: '300px'
+  },
   content: {
     display: 'grid',
     gridTemplateColumns: '1fr 1fr',
@@ -368,7 +396,9 @@ const styles = {
     objectFit: 'cover',
     borderRadius: '8px',
     cursor: 'pointer',
-    border: '2px solid var(--border-color)',
+    borderWidth: '2px',
+    borderStyle: 'solid',
+    borderColor: 'var(--border-color)',
     transition: 'border-color 0.3s ease'
   },
   thumbnailActive: {
@@ -421,7 +451,9 @@ const styles = {
   
   optionButton: {
     padding: '0.75rem 1.5rem',
-    border: '2px solid var(--border-color)',
+    borderWidth: '2px',
+    borderStyle: 'solid',
+    borderColor: 'var(--border-color)',
     borderRadius: '8px',
     backgroundColor: 'var(--secondary-color)',
     color: 'var(--text-color)',
@@ -449,7 +481,9 @@ const styles = {
   quantityButton: {
     width: '48px',
     height: '48px',
-    border: '2px solid var(--primary-color)',
+    borderWidth: '2px',
+    borderStyle: 'solid',
+    borderColor: 'var(--primary-color)',
     borderRadius: '8px',
     backgroundColor: 'var(--secondary-color)',
     color: 'var(--primary-color)',

@@ -1,5 +1,5 @@
 import React from 'react';
-import { createBrowserRouter, Navigate } from 'react-router-dom';
+import { createBrowserRouter, Navigate, NavLink } from 'react-router-dom';
 import { useAuthContext } from './context/AuthContext';
 
 // Layouts
@@ -74,18 +74,18 @@ const AdminLayout = ({ children }) => {
       <aside className={`admin-sidebar ${isSidebarOpen ? 'open' : ''}`}>
         <button className="close-sidebar" onClick={toggleSidebar}>×</button>
         <nav className="admin-nav">
-          <NavLink  href="/admin/dashboard" className="admin-nav-link">
+          <NavLink to="/admin/dashboard" className="admin-nav-link">
             📊 الرئيسية
-          </NavLink >
-          <NavLink  href="/admin/products" className="admin-nav-link">
+          </NavLink>
+          <NavLink to="/admin/products" className="admin-nav-link">
             📦 المنتجات
-          </NavLink >
-          <NavLink  href="/admin/orders" className="admin-nav-link">
+          </NavLink>
+          <NavLink to="/admin/orders" className="admin-nav-link">
             🛒 الطلبات
-          </NavLink >
-          <NavLink  href="/admin/stats" className="admin-nav-link">
+          </NavLink>
+          <NavLink to="/admin/stats" className="admin-nav-link">
             📈 الإحصائيات
-          </NavLink >
+          </NavLink>
         </nav>
         <div className="admin-sidebar-footer">
           <button onClick={logout} className="admin-logout-button">

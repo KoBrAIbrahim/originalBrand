@@ -733,14 +733,14 @@ a:hover {
        (uses the left/negative-margin pattern so the strip is full-bleed while the page width stays fixed) */
   position: relative;
   left: 50%;
-  transform: translateX(-90%);
+  transform: translateX(-50%);
   width: 100vw;
     -webkit-overflow-scrolling: touch;
   }
   .mobile-image-strip img {
     /* each image occupies the full viewport width */
     flex: 0 0 100vw;
-    width: 75%;
+    width: 100vw;
     height: 30vh; /* reduced height for less vertical padding */
     object-fit: cover;
     scroll-snap-align: center;
@@ -842,6 +842,38 @@ a:hover {
     align-items: center;
     justify-content: center;
   }
+}
+
+/* For very narrow mobile screens (<= 430px and down to ~400px):
+   - stop using horizontal scrolling for option lists
+   - show options in a 3-column grid so sizes/colors are always visible
+   - ensure buttons shrink to the grid cell and wrap text if needed
+*/
+@media (max-width: 430px) {
+  .options-container {
+    display: grid !important;
+    grid-template-columns: repeat(3, 1fr) !important;
+    gap: 0.5rem !important;
+    overflow-x: visible !important;
+    padding-bottom: 0 !important;
+  }
+
+  /* Make option buttons fill the grid cell and avoid fixed min-widths */
+  .options-container button {
+    flex: none !important;
+    min-width: 0 !important;
+    width: 100% !important;
+    white-space: normal !important; /* allow multi-line labels when needed */
+    text-align: center !important;
+    padding: 0.5rem 0.5rem !important;
+    box-sizing: border-box !important;
+  }
+
+  /* Slightly reduce font-size and spacing on very narrow screens */
+  .options-container button { font-size: 0.9rem !important; }
+
+  /* If mobile-controls wraps the options, remove extra horizontal padding */
+  .mobile-controls .options-container { padding-left: 0.25rem !important; padding-right: 0.25rem !important; }
 }
 
 /* Responsive modal (OrderDialog) styles */
